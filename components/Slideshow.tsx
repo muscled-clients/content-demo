@@ -7,6 +7,9 @@ import SecondSlide from './slides/SecondSlide';
 import ThirdSlide from './slides/ThirdSlide';
 import FourthSlide from './slides/FourthSlide';
 import FifthSlide from './slides/FifthSlide';
+import SixthSlide from './slides/SixthSlide';
+import SeventhSlide from './slides/SeventhSlide';
+import EighthSlide from './slides/EighthSlide';
 
 const slides = [
   { id: 1, component: FirstSlide },
@@ -14,6 +17,9 @@ const slides = [
   { id: 3, component: ThirdSlide },
   { id: 4, component: FourthSlide },
   { id: 5, component: FifthSlide },
+  { id: 6, component: SixthSlide },
+  { id: 7, component: SeventhSlide },
+  { id: 8, component: EighthSlide },
 ];
 
 export default function Slideshow() {
@@ -34,6 +40,13 @@ export default function Slideshow() {
 
   const CurrentSlideComponent = slides[currentSlide].component;
 
+  // Navigation function to be passed to slides
+  const navigateToSlide = (slideIndex: number) => {
+    if (slideIndex >= 0 && slideIndex < slides.length) {
+      setCurrentSlide(slideIndex);
+    }
+  };
+
   return (
     <div className="relative w-screen h-screen bg-black overflow-hidden">
       <AnimatePresence mode="wait">
@@ -45,7 +58,7 @@ export default function Slideshow() {
           transition={{ duration: 0.5 }}
           className="absolute inset-0"
         >
-          <CurrentSlideComponent />
+          <CurrentSlideComponent navigateToSlide={navigateToSlide} />
         </motion.div>
       </AnimatePresence>
 

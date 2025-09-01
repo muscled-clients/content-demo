@@ -2,13 +2,23 @@
 
 import { motion } from 'framer-motion';
 
-export default function FourthSlide() {
+interface FourthSlideProps {
+  navigateToSlide?: (slideIndex: number) => void;
+}
+
+export default function FourthSlide({ navigateToSlide }: FourthSlideProps) {
   const tools = [
-    { id: 1, name: 'GITHUB', description: 'Version Control' },
-    { id: 2, name: 'CLAUDE CODE', description: 'AI Assistant' },
-    { id: 3, name: 'SUPERWHISPER', description: 'Dictation Tool' },
-    { id: 4, name: 'VS CODE', description: 'Code Editor' }
+    { id: 1, name: 'GITHUB', description: 'Version Control', slideIndex: 4 }, // Slide 5 (GitHub details)
+    { id: 2, name: 'CLAUDE CODE', description: 'AI Assistant', slideIndex: 5 }, // Slide 6 (Claude Code details)
+    { id: 3, name: 'SUPERWHISPER', description: 'Dictation Tool', slideIndex: 6 }, // Slide 7 (SuperWhisper details)
+    { id: 4, name: 'VS CODE', description: 'Code Editor', slideIndex: 7 } // Slide 8 (VS Code details)
   ];
+
+  const handleToolClick = (slideIndex: number) => {
+    if (navigateToSlide) {
+      navigateToSlide(slideIndex);
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -56,7 +66,9 @@ export default function FourthSlide() {
                 scale: 1.05,
                 transition: { duration: 0.2 }
               }}
-              className="bg-white rounded-lg p-12 flex flex-col items-center justify-center min-h-[250px] shadow-2xl cursor-pointer"
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleToolClick(tool.slideIndex)}
+              className="bg-white rounded-lg p-12 flex flex-col items-center justify-center min-h-[250px] shadow-2xl cursor-pointer transition-shadow hover:shadow-3xl"
             >
               <h2 className="text-gray-900 text-3xl font-bold text-center mb-3">
                 {tool.name}
