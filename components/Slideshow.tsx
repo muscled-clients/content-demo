@@ -10,6 +10,8 @@ import FifthSlide from './slides/FifthSlide';
 import SixthSlide from './slides/SixthSlide';
 import SeventhSlide from './slides/SeventhSlide';
 import EighthSlide from './slides/EighthSlide';
+import NinthSlide from './slides/NinthSlide';
+import TenthSlide from './slides/TenthSlide';
 
 const slides = [
   { id: 1, component: FirstSlide },
@@ -20,6 +22,8 @@ const slides = [
   { id: 6, component: SixthSlide },
   { id: 7, component: SeventhSlide },
   { id: 8, component: EighthSlide },
+  { id: 9, component: NinthSlide },
+  { id: 10, component: TenthSlide },
 ];
 
 export default function Slideshow() {
