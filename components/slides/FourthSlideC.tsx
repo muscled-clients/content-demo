@@ -2,12 +2,11 @@
 
 import { motion } from 'framer-motion';
 
-export default function FourthSlide() {
+export default function FourthSlideC() {
   const tools = [
     { id: 1, name: 'GITHUB', description: 'Version Control' },
     { id: 2, name: 'CLAUDE CODE', description: 'AI Assistant' },
     { id: 3, name: 'SUPERWHISPER', description: 'Dictation Tool' },
-    { id: 4, name: 'VS CODE', description: 'Code Editor' }
   ];
 
   const containerVariants = {
@@ -106,8 +105,17 @@ export default function FourthSlide() {
             </div>
           </div>
           
-          {/* SuperWhisper - static (no animation) */}
-          <div className="relative bg-black rounded-lg p-12 flex flex-col items-center justify-center min-h-[250px] shadow-2xl cursor-pointer overflow-hidden">
+          {/* SuperWhisper - animated (new box) */}
+          <motion.div
+            variants={boxVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover={{ 
+              scale: 1.05,
+              transition: { duration: 0.2 }
+            }}
+            className="relative bg-black rounded-lg p-12 flex flex-col items-center justify-center min-h-[250px] shadow-2xl cursor-pointer overflow-hidden"
+          >
             {/* Animated gradient border */}
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg opacity-75">
               <motion.div 
@@ -136,48 +144,10 @@ export default function FourthSlide() {
                 Dictation Tool
               </p>
             </div>
-          </div>
-          
-          {/* VS Code - animated (new box) */}
-          <motion.div
-            variants={boxVariants}
-            initial="hidden"
-            animate="visible"
-            whileHover={{ 
-              scale: 1.05,
-              transition: { duration: 0.2 }
-            }}
-            className="relative bg-gradient-to-br from-white to-gray-50 rounded-lg p-12 flex flex-col items-center justify-center min-h-[250px] shadow-2xl cursor-pointer overflow-hidden"
-          >
-            {/* Animated gradient border */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg opacity-75">
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-pink-500 via-yellow-500 to-blue-500"
-                animate={{
-                  background: [
-                    'linear-gradient(0deg, #3b82f6, #8b5cf6, #ec4899)',
-                    'linear-gradient(90deg, #ec4899, #f59e0b, #3b82f6)', 
-                    'linear-gradient(180deg, #f59e0b, #10b981, #8b5cf6)',
-                    'linear-gradient(270deg, #10b981, #3b82f6, #ec4899)'
-                  ]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
-              />
-            </div>
-            <div className="absolute inset-[4px] bg-black rounded-lg" />
-            <div className="relative z-10">
-              <h2 className="text-white text-3xl font-bold text-center mb-3">
-                VS CODE
-              </h2>
-              <p className="text-gray-400 text-sm uppercase tracking-wider">
-                Code Editor
-              </p>
-            </div>
           </motion.div>
+          
+          {/* Empty space for fourth box */}
+          <div className="opacity-0"></div>
         </div>
 
       </div>

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import TodoResponse from '../responses/TodoResponse';
 import CodeDiffResponse from '../responses/CodeDiffResponse';
+import TextResponse from '../responses/TextResponse';
 
 type ResponseType = 'text' | 'todo' | 'diff';
 
@@ -13,19 +14,10 @@ interface ResponseConfig {
 }
 
 export default function ThirdSlide() {
-  const [isTyping, setIsTyping] = useState(false);
-  const [thinkingWord, setThinkingWord] = useState('');
   const [showResponse, setShowResponse] = useState(false);
   const [responseType, setResponseType] = useState<ResponseType>('text');
   const [customContent, setCustomContent] = useState('');
-  const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
-  const thinkingWords = [
-    'Analyzing', 'Synthesizing', 'Contemplating', 'Processing', 
-    'Evaluating', 'Formulating', 'Architecting', 'Conceptualizing',
-    'Orchestrating', 'Structuring'
-  ];
   
   // Default contents for different response types
   const defaultContents = {
@@ -93,20 +85,11 @@ Now I'll set up the authentication system and create the dashboard components...
 
   // Start animation sequence
   const startAnimation = () => {
-    setIsAnimationStarted(true);
     setShowResponse(false);
-    setIsTyping(true);
-    
-    // Randomly select a thinking word
-    const randomWord = thinkingWords[Math.floor(Math.random() * thinkingWords.length)];
-    setThinkingWord(randomWord);
-    
-    // Show response after thinking
+    // Show response immediately (thinking is now handled by response components)
     setTimeout(() => {
-      setIsTyping(false);
-      setThinkingWord('');
       setShowResponse(true);
-    }, 2000);
+    }, 100);
   };
 
   // Render appropriate response component
@@ -123,14 +106,7 @@ Now I'll set up the authentication system and create the dashboard components...
       
       case 'text':
       default:
-        return (
-          <div className="flex items-start gap-3">
-            <span className="text-white text-lg font-bold">•</span>
-            <div className="flex-1">
-              <div className="text-white text-sm whitespace-pre-wrap font-mono">{content}</div>
-            </div>
-          </div>
-        );
+        return <TextResponse content={content} />;
     }
   };
 
@@ -241,52 +217,9 @@ Now I'll set up the authentication system and create the dashboard components...
                 </div>
               </motion.div>
 
-              {/* Claude Typing Indicator */}
-              {isTyping && isAnimationStarted && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="space-y-2"
-                >
-                  {/* Thinking status */}
-                  {thinkingWord && (
-                    <div className="flex items-center gap-2 text-sm text-gray-500 ml-9">
-                      <motion.span
-                        animate={{ opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      >
-                        {thinkingWord}...
-                      </motion.span>
-                      <span className="text-xs">ESC to interrupt</span>
-                    </div>
-                  )}
-                  
-                  {/* Claude typing dots */}
-                  <div className="flex items-start gap-3">
-                    <span className="text-white text-lg font-bold">•</span>
-                    <div className="flex items-center gap-1">
-                      <motion.span
-                        className="w-1.5 h-1.5 bg-gray-400 rounded-full"
-                        animate={{ opacity: [0.3, 1, 0.3] }}
-                        transition={{ duration: 1.4, repeat: Infinity }}
-                      />
-                      <motion.span
-                        className="w-1.5 h-1.5 bg-gray-400 rounded-full"
-                        animate={{ opacity: [0.3, 1, 0.3] }}
-                        transition={{ duration: 1.4, repeat: Infinity, delay: 0.2 }}
-                      />
-                      <motion.span
-                        className="w-1.5 h-1.5 bg-gray-400 rounded-full"
-                        animate={{ opacity: [0.3, 1, 0.3] }}
-                        transition={{ duration: 1.4, repeat: Infinity, delay: 0.4 }}
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
 
               {/* Claude's Response */}
-              {showResponse && isAnimationStarted && (
+              {showResponse && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}

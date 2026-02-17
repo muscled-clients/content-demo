@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import ThinkingAnimation from '../ThinkingAnimation';
 
 interface DiffLine {
   type: 'add' | 'remove' | 'context';
@@ -24,16 +25,18 @@ export default function CodeDiffResponse({
 }: CodeDiffResponseProps) {
   const [visibleLines, setVisibleLines] = useState(0);
   const [showFileName, setShowFileName] = useState(false);
+  const [isThinking, setIsThinking] = useState(true);
 
-  // Animate file name first, then lines
-  useEffect(() => {
-    // Show file name
-    const fileTimer = setTimeout(() => {
+  // Handle thinking animation completion
+  const handleThinkingComplete = () => {
+    setIsThinking(false);
+    // Show file name after thinking
+    setTimeout(() => {
       setShowFileName(true);
     }, 300);
 
     // Then show lines progressively
-    const lineTimer = setTimeout(() => {
+    setTimeout(() => {
       let count = 0;
       const interval = setInterval(() => {
         if (count < changes.length) {
@@ -44,15 +47,8 @@ export default function CodeDiffResponse({
           onComplete?.();
         }
       }, 50); // Fast line-by-line reveal
-
-      return () => clearInterval(interval);
     }, 800);
-
-    return () => {
-      clearTimeout(fileTimer);
-      clearTimeout(lineTimer);
-    };
-  }, [changes.length, onComplete]);
+  };
 
   const getLineStyle = (type: DiffLine['type']) => {
     switch (type) {
@@ -78,8 +74,17 @@ export default function CodeDiffResponse({
 
   return (
     <div className="font-mono text-sm">
+      {/* Thinking animation */}
+      {isThinking && (
+        <ThinkingAnimation 
+          duration={1500}
+          onComplete={handleThinkingComplete}
+          showControls={true}
+        />
+      )}
+
       {/* File name header */}
-      {showFileName && (
+      {!isThinking && showFileName && (
         <motion.div
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
@@ -91,7 +96,8 @@ export default function CodeDiffResponse({
       )}
 
       {/* Diff lines */}
-      <div className="space-y-0">
+      {!isThinking && (
+        <div className="space-y-0">
         {changes.slice(0, visibleLines).map((line, index) => (
           <motion.div
             key={index}
@@ -118,7 +124,8 @@ export default function CodeDiffResponse({
             </span>
           </motion.div>
         ))}
-      </div>
+        </div>
+      )}
 
       {/* Summary after completion */}
       {visibleLines === changes.length && changes.length > 0 && (

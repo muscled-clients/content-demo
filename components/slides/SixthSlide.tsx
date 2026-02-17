@@ -2,36 +2,34 @@
 
 import { motion } from 'framer-motion';
 
-export default function FifthSlide() {
-  const words = ["IF", "YOU'RE", "NOT", "USING", "CLAUDE", "CODE,", "YOU'RE", "MISSING", "OUT."];
+export default function SixthSlide() {
+  const text = "THIS IS HOW WE RUN MUSCLED";
+  const letters = text.split("");
   
   const container = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
+        staggerChildren: 0.03,
+        delayChildren: 0.3
       }
     }
   };
 
-  const word = {
+  const letter = {
     hidden: {
       opacity: 0,
-      y: 40,
-      scale: 0.5,
-      rotateX: -90
+      filter: "blur(10px)",
+      x: -20
     },
     visible: {
       opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
+      filter: "blur(0px)",
+      x: 0,
       transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 200
+        duration: 0.4,
+        ease: "easeOut"
       }
     }
   };
@@ -39,18 +37,22 @@ export default function FifthSlide() {
   return (
     <div className="w-full h-full flex items-center justify-center relative overflow-hidden bg-black">
       <motion.h1 
-        className="text-6xl font-bold text-center text-white flex flex-wrap justify-center gap-4 max-w-6xl"
+        className="text-6xl font-bold text-center text-white max-w-6xl"
         variants={container}
         initial="hidden"
         animate="visible"
       >
-        {words.map((item, index) => (
+        {letters.map((item, index) => (
           <motion.span
             key={index}
-            variants={word}
+            variants={letter}
             className="inline-block"
+            style={{
+              display: item === " " ? "inline" : "inline-block",
+              width: item === " " ? "0.5em" : "auto"
+            }}
           >
-            {item}
+            {item === " " ? "\u00A0" : item}
           </motion.span>
         ))}
       </motion.h1>
